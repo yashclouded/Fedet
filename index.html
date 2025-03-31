@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fedet - Affordable Tech Solutions</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Fedet</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#register">Register</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <div class="auth-buttons">
+                <a href="#login" class="btn-login">Login</a>
+                <a href="#signup" class="btn-signup">Sign Up</a>
+            </div>
+        </div>
+        <div class="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="animate">Transform Your Business with Affordable Tech Talent</h1>
+            <p class="animate">Connect with talented student programmers and AI solutions at competitive rates</p>
+            <div class="hero-buttons animate">
+                <a href="#register" class="cta-button">Get Started</a>
+                <a href="#services" class="cta-button secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card animate">
+                <i class="fas fa-code"></i>
+                <h3>Student Interns</h3>
+                <p>Access talented student programmers eager to learn and contribute to your projects</p>
+            </div>
+            <div class="service-card animate">
+                <i class="fas fa-robot"></i>
+                <h3>AI Solutions</h3>
+                <p>Implement cutting-edge AI solutions to automate and optimize your business</p>
+            </div>
+            <div class="service-card animate">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>Learning Programs</h3>
+                <p>Develop your team with our comprehensive learning and development programs</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="registration-section">
+        <h2>Join Our Platform</h2>
+        <div class="registration-grid">
+            <div class="registration-card animate">
+                <i class="fas fa-user-graduate"></i>
+                <h3>For Students</h3>
+                <ul>
+                    <li>Find paid internship opportunities</li>
+                    <li>Work on real-world projects</li>
+                    <li>Learn from experienced mentors</li>
+                    <li>Build your portfolio</li>
+                    <li>Flexible working hours</li>
+                </ul>
+                <a href="#student-signup" class="cta-button">Register as Student</a>
+            </div>
+            <div class="registration-card animate">
+                <i class="fas fa-building"></i>
+                <h3>For Companies</h3>
+                <ul>
+                    <li>Access affordable tech talent</li>
+                    <li>Post internship opportunities</li>
+                    <li>Find AI solutions</li>
+                    <li>Scale your development team</li>
+                    <li>Mentor future developers</li>
+                </ul>
+                <a href="#company-signup" class="cta-button">Register as Company</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Fedet</h2>
+        <div class="about-content">
+            <p>Fedet is your gateway to affordable tech talent and innovative solutions. We bridge the gap between businesses and talented student programmers, while also providing cutting-edge AI solutions to help your business grow.</p>
+            <div class="stats-grid">
+                <div class="stat-item animate">
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Students</span>
+                </div>
+                <div class="stat-item animate">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Companies</span>
+                </div>
+                <div class="stat-item animate">
+                    <span class="stat-number">2000+</span>
+                    <span class="stat-label">Projects Completed</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Get in Touch</h2>
+        <div class="contact-form">
+            <form id="contactForm">
+                <input type="text" placeholder="Name" required>
+                <input type="email" placeholder="Email" required>
+                <select required>
+                    <option value="">Select Service</option>
+                    <option value="interns">Student Interns</option>
+                    <option value="ai">AI Solutions</option>
+                    <option value="learning">Learning Programs</option>
+                </select>
+                <textarea placeholder="Message" required></textarea>
+                <button type="submit" class="cta-button">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Fedet</h3>
+                <p>Your partner in affordable tech solutions</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: contact@fedet.xyz</p>
+                <p>Website: fedet.xyz</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Fedet. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for Login/Signup -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+            <div class="auth-form" id="login-form">
+                <form>
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit" class="cta-button">Login</button>
+                </form>
+            </div>
+            <div class="auth-form" id="signup-form" style="display: none;">
+                <form>
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <select required>
+                        <option value="">Select Account Type</option>
+                        <option value="student">Student</option>
+                        <option value="company">Company</option>
+                    </select>
+                    <button type="submit" class="cta-button">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
