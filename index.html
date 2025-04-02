@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fedet - Affordable Tech Solutions</title>
+    <title>Fedet -  Tech Solutions From Students, for Everyone.</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -17,8 +17,8 @@
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
             <div class="auth-buttons">
-                <a href="#login" class="btn-login">Login</a>
-                <a href="#signup" class="btn-signup">Sign Up</a>
+                <button onclick="openAuthModal('login')" class="btn-login">Login</button>
+                <button onclick="openAuthModal('signup')" class="btn-signup">Sign Up</button>
             </div>
         </div>
         <div class="mobile-menu">
@@ -29,7 +29,7 @@
     <section id="home" class="hero">
         <div class="hero-content">
             <h1 class="animate">Transform Your Business with Affordable Tech Talent</h1>
-            <p class="animate">Connect with talented student programmers and AI solutions at competitive rates</p>
+            <p class="animate">Connect with talented student programmers and AI solutions.</p>
             <div class="hero-buttons animate">
                 <a href="#register" class="cta-button">Get Started</a>
                 <a href="#services" class="cta-button secondary">Learn More</a>
@@ -62,28 +62,30 @@
         <h2>Join Our Platform</h2>
         <div class="registration-grid">
             <div class="registration-card animate">
-                <i class="fas fa-user-graduate"></i>
                 <h3>For Students</h3>
                 <ul>
-                    <li>Find paid internship opportunities</li>
-                    <li>Work on real-world projects</li>
-                    <li>Learn from experienced mentors</li>
-                    <li>Build your portfolio</li>
-                    <li>Flexible working hours</li>
+                    <li>Get paid internships at top tech companies</li>
+                    <li>Work on real projects with industry experts</li>
+                    <li>Build your portfolio with hands-on experience</li>
+                    <li>Receive personalized mentorship and guidance</li>
+                    <li>Learn latest technologies and best practices</li>
+                    <li>Network with industry professionals</li>
+                    <li>Earn while you learn and grow</li>
                 </ul>
-                <a href="#student-signup" class="cta-button">Register as Student</a>
+                <button class="cta-button" onclick="openAuthModal('signup')">Join as Student</button>
             </div>
             <div class="registration-card animate">
-                <i class="fas fa-building"></i>
                 <h3>For Companies</h3>
                 <ul>
-                    <li>Access affordable tech talent</li>
-                    <li>Post internship opportunities</li>
-                    <li>Find AI solutions</li>
-                    <li>Scale your development team</li>
-                    <li>Mentor future developers</li>
+                    <li>Access pre-vetted student developers</li>
+                    <li>Save up to 60% on development costs</li>
+                    <li>Scale your team flexibly as needed</li>
+                    <li>Get dedicated project management support</li>
+                    <li>Risk-free trial period for new hires</li>
+                    <li>Build a pipeline of future talent</li>
+                    <li>Quality work, guaranteed satisfaction</li>
                 </ul>
-                <a href="#company-signup" class="cta-button">Register as Company</a>
+                <button class="cta-button" onclick="openAuthModal('signup')">Join as Company</button>
             </div>
         </div>
     </section>
@@ -109,22 +111,49 @@
         </div>
     </section>
 
-    <section id="contact" class="contact">
-        <h2>Get in Touch</h2>
-        <div class="contact-form">
-            <form id="contactForm">
-                <input type="text" placeholder="Name" required>
-                <input type="email" placeholder="Email" required>
-                <select required>
-                    <option value="">Select Service</option>
-                    <option value="interns">Student Interns</option>
-                    <option value="ai">AI Solutions</option>
-                    <option value="learning">Learning Programs</option>
-                </select>
-                <textarea placeholder="Message" required></textarea>
-                <button type="submit" class="cta-button">Send Message</button>
-            </form>
+    <section id="contact" class="contact-section">
+        <div class="contact-intro">
+            <h2 class="contact-title">Get in Touch</h2>
+            <p class="contact-description">
+                Fill out the form below and we'll get back to you as soon as possible.
+            </p>
         </div>
+
+        <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="a1662d29-c89f-41a7-90c2-b5131bf5624b" />
+            <input type="hidden" name="subject" value="New Contact Form Submission - Fedet" />
+            <input type="hidden" name="from_name" value="Fedet Website Contact" />
+            <input type="checkbox" name="botcheck" style="display: none;" />
+
+            <div class="form-group-container">
+                <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input id="name" name="name" class="form-input" placeholder="Your name" type="text" required />
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input id="email" name="email" class="form-input" placeholder="Your email" type="email" required />
+                </div>
+                
+                <div class="form-group">
+                    <label for="service" class="form-label">Service</label>
+                    <select id="service" name="service" class="form-input" required>
+                        <option value="">Select Service</option>
+                        <option value="Student Internship">Student Internship</option>
+                        <option value="AI Solutions">AI Solutions</option>
+                        <option value="Learning Programs">Learning Programs</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-textarea" id="message" name="message" placeholder="Tell us about your project or requirements" required></textarea>
+                </div>
+            </div>
+            
+            <button class="form-submit cta-button" type="submit">Send Message</button>
+        </form>
     </section>
 
     <footer>
@@ -155,29 +184,38 @@
     <!-- Modal for Login/Signup -->
     <div id="auth-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal" onclick="closeAuthModal()">&times;</span>
             <div class="auth-tabs">
-                <button class="auth-tab active" data-tab="login">Login</button>
-                <button class="auth-tab" data-tab="signup">Sign Up</button>
+                <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
             </div>
             <div class="auth-form" id="login-form">
-                <form>
-                    <input type="email" placeholder="Email" required>
-                    <input type="password" placeholder="Password" required>
+                <form onsubmit="handleLogin(event)">
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
                     <button type="submit" class="cta-button">Login</button>
                 </form>
             </div>
             <div class="auth-form" id="signup-form" style="display: none;">
-                <form>
-                    <input type="text" placeholder="Full Name" required>
-                    <input type="email" placeholder="Email" required>
-                    <input type="password" placeholder="Password" required>
-                    <select required>
-                        <option value="">Select Account Type</option>
-                        <option value="student">Student</option>
-                        <option value="company">Company</option>
-                    </select>
-                    <button type="submit" class="cta-button">Sign Up</button>
+                <div class="signup-type-selector">
+                    <button class="signup-type-btn active" onclick="switchSignupType('student')">Student</button>
+                    <button class="signup-type-btn" onclick="switchSignupType('company')">Company</button>
+                </div>
+                <form id="student-signup-form" onsubmit="handleStudentSignup(event)">
+                    <input type="text" name="name" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="text" name="university" placeholder="University/College" required>
+                    <input type="text" name="major" placeholder="Major/Field of Study" required>
+                    <button type="submit" class="cta-button">Sign Up as Student</button>
+                </form>
+                <form id="company-signup-form" style="display: none;" onsubmit="handleCompanySignup(event)">
+                    <input type="text" name="companyName" placeholder="Company Name" required>
+                    <input type="email" name="email" placeholder="Company Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="text" name="industry" placeholder="Industry" required>
+                    <textarea name="description" placeholder="Company Description" required></textarea>
+                    <button type="submit" class="cta-button">Sign Up as Company</button>
                 </form>
             </div>
         </div>
