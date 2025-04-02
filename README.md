@@ -13,13 +13,13 @@ A platform connecting students with tech companies for internships and real-worl
 
 ## Live Demo
 
-Visit the live website: [Fedet](https://[your-github-username].github.io/Fedet-1/)
+Visit the live website: [Fedet](https://yashclouded.github.io/fedet/)
 
 ## Setup
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/[your-github-username]/Fedet-1.git
+git clone https://github.com/yashclouded/fedet.git
 ```
 
 2. Open `index.html` in your browser or use a local server.
