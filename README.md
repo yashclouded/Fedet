@@ -46,11 +46,22 @@ Fedet is a platform that connects students with companies for real-world project
    ```
 
 3. Set up Firebase:
-   - Create a Firebase project
-   - Enable Authentication, Firestore, and Storage
-   - Update the Firebase configuration in `firebase-config.js`
+   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+   - Enable Authentication (Email/Password, Google, GitHub)
+   - Enable Firestore Database
+   - Enable Storage
+   - Copy your Firebase configuration:
+     - Go to Project Settings
+     - Scroll down to "Your apps" section
+     - Click the web app icon (</>)
+     - Register your app and copy the configuration object
 
-4. Start the development server:
+4. Configure Firebase:
+   - Copy `firebase.config.template.js` to `firebase-config.js`
+   - Replace the placeholder values with your Firebase configuration
+   - **IMPORTANT: Never commit `firebase-config.js` to version control**
+
+5. Start the development server:
    ```
    npm start
    ```
@@ -61,9 +72,21 @@ Fedet is a platform that connects students with companies for real-world project
 - `profile-setup.html` - Student profile setup page
 - `company-profile-setup.html` - Company profile setup page
 - `dashboard.html` - User dashboard after login
-- `firebase-config.js` - Firebase configuration and authentication functions
+- `firebase.config.template.js` - Template for Firebase configuration
 - `script.js` - Main JavaScript functionality
 - `styles.css` - Styling for the application
+
+## Security Notes
+
+1. **API Keys**: The Firebase configuration contains API keys. While these keys alone don't grant access to your Firebase resources (they're restricted by Firebase Security Rules), it's still best practice to:
+   - Keep them private
+   - Use environment variables in production
+   - Set up proper Firebase Security Rules
+
+2. **Security Rules**: Make sure to set up proper Firebase Security Rules for:
+   - Firestore Database
+   - Storage
+   - Authentication
 
 ## Authentication Flow
 
