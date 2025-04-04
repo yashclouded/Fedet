@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile Setup - Fedet</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile-setup-form">
+            <h2>Complete Your Company Profile</h2>
+            <form id="companyProfileForm">
+                <div class="form-group">
+                    <label for="companyLogo">Company Logo</label>
+                    <input type="file" id="companyLogo" accept="image/*" required>
+                    <div class="preview-container">
+                        <img id="logoPreview" src="#" alt="Logo Preview" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="industry">Industry</label>
+                    <select id="industry" required>
+                        <option value="">Select Industry</option>
+                        <option value="technology">Technology</option>
+                        <option value="finance">Finance</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="education">Education</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="companySize">Company Size</label>
+                    <select id="companySize" required>
+                        <option value="">Select Size</option>
+                        <option value="1-10">1-10 employees</option>
+                        <option value="11-50">11-50 employees</option>
+                        <option value="51-200">51-200 employees</option>
+                        <option value="201-500">201-500 employees</option>
+                        <option value="501+">501+ employees</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Company Description</label>
+                    <textarea id="description" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="website">Company Website</label>
+                    <input type="url" id="website" placeholder="https://">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectTypes">Types of Projects</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="paid"> Paid Projects</label>
+                        <label><input type="checkbox" value="unpaid"> Unpaid Projects</label>
+                        <label><input type="checkbox" value="internship"> Internships</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="skillsNeeded">Skills You're Looking For</label>
+                    <input type="text" id="skillsNeeded" placeholder="e.g., React, Python, UI/UX">
+                    <small>Separate skills with commas</small>
+                </div>
+
+                <button type="submit" class="btn-primary">Complete Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { Auth } from './firebase-config.js';
+        
+        // Check if user is logged in and is a company
+        const checkAuth = async () => {
+            const user = Auth.getCurrentUser();
+            if (!user) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const userDoc = await Auth.getUserProfile();
+            if (userDoc.role !== 'company') {
+                window.location.href = '/profile-setup.html';
+                return;
+            }
+        };
+
+        // Logo preview
+        const logoInput = document.getElementById('companyLogo');
+        const logoPreview = document.getElementById('logoPreview');
+
+        logoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    logoPreview.src = e.target.result;
+                    logoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission
+        const form = document.getElementById('companyProfileForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const logoFile = logoInput.files[0];
+            const companyData = {
+                companyName: document.getElementById('companyName').value,
+                industry: document.getElementById('industry').value,
+                companySize: document.getElementById('companySize').value,
+                description: document.getElementById('description').value,
+                website: document.getElementById('website').value,
+                location: document.getElementById('location').value,
+                projectTypes: Array.from(document.querySelectorAll('#projectTypes input:checked')).map(cb => cb.value),
+                skillsNeeded: document.getElementById('skillsNeeded').value.split(',').map(s => s.trim()),
+                profileCompleted: true
+            };
+
+            try {
+                // Upload logo if provided
+                if (logoFile) {
+                    companyData.logoURL = await Auth.uploadProfilePicture(logoFile);
+                }
+
+                // Update company profile
+                await Auth.updateCompanyProfile(companyData);
+                
+                // Redirect to dashboard
+                window.location.href = '/dashboard.html';
+            } catch (error) {
+                console.error('Profile setup error:', error);
+                showNotification(error.message, 'error');
+            }
+        });
+
+        // Initialize
+        checkAuth();
+    </script>
+</body>
+</html> 

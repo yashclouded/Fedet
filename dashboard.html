@@ -1,0 +1,282 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Fedet</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/">Fedet</a>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active">Dashboard</a>
+            <a href="/profile.html">My Profile</a>
+            <a href="/applications.html">My Applications</a>
+            <a href="/messages.html">Messages</a>
+        </div>
+        <div class="auth-buttons">
+            <!-- Will be populated by Firebase auth state -->
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <aside class="dashboard-sidebar">
+            <div class="user-profile-summary">
+                <img id="user-avatar" src="/assets/default-avatar.png" alt="Profile Picture">
+                <h3 id="user-name">Loading...</h3>
+                <p id="user-university">Loading...</p>
+            </div>
+            <div class="filter-section">
+                <h4>Filter Jobs</h4>
+                <div class="filter-group">
+                    <label>Job Type</label>
+                    <select id="job-type-filter">
+                        <option value="">All Types</option>
+                        <option value="internship">Internship</option>
+                        <option value="part-time">Part Time</option>
+                        <option value="full-time">Full Time</option>
+                        <option value="project">Project Based</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Skills</label>
+                    <div id="skills-filter" class="skills-container">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <section class="jobs-section">
+            <div class="jobs-header">
+                <h1>Available Opportunities</h1>
+                <div class="search-bar">
+                    <input type="text" id="job-search" placeholder="Search jobs...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <div class="jobs-grid" id="jobs-container">
+                <!-- Jobs will be populated here -->
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading opportunities...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Job Application Modal -->
+    <div id="application-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Apply for <span id="job-title-modal">Position</span></h2>
+            <form id="application-form">
+                <div class="form-group">
+                    <label for="cover-letter">Cover Letter</label>
+                    <textarea id="cover-letter" rows="6" placeholder="Why are you interested in this position?" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="portfolio-link">Portfolio Link (Optional)</label>
+                    <input type="url" id="portfolio-link" placeholder="https://your-portfolio.com">
+                </div>
+                <button type="submit" class="btn-primary">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="social-auth">
+        <button class="social-auth-btn google">
+            <i class="fab fa-google"></i> Continue with Google
+        </button>
+        <button class="social-auth-btn github">
+            <i class="fab fa-github"></i> Continue with GitHub
+        </button>
+    </div>
+
+    <script type="module">
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, orderBy, limit, getDocs, addDoc, doc, setDoc, serverTimestamp, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+        const auth = getAuth();
+        const db = getFirestore();
+        let currentUser = null;
+
+        // Check authentication and load user data
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = '/';
+                return;
+            }
+
+            currentUser = user;
+            await loadUserProfile(user.uid);
+            await loadJobs();
+        });
+
+        async function loadUserProfile(userId) {
+            try {
+                const userDoc = await getDocs(doc(db, 'users', userId));
+                const userData = userDoc.data();
+                
+                document.getElementById('user-avatar').src = userData.profilePicture || '/assets/default-avatar.png';
+                document.getElementById('user-name').textContent = userData.name;
+                document.getElementById('user-university').textContent = userData.university;
+
+                // Populate skills filter
+                const skillsContainer = document.getElementById('skills-filter');
+                userData.skills.forEach(skill => {
+                    const skillChip = document.createElement('div');
+                    skillChip.className = 'skill-chip';
+                    skillChip.textContent = skill;
+                    skillChip.addEventListener('click', () => {
+                        skillChip.classList.toggle('selected');
+                        filterJobs();
+                    });
+                    skillsContainer.appendChild(skillChip);
+                });
+            } catch (error) {
+                console.error('Error loading user profile:', error);
+            }
+        }
+
+        async function loadJobs() {
+            try {
+                const jobsContainer = document.getElementById('jobs-container');
+                jobsContainer.innerHTML = ''; // Clear loading spinner
+
+                const jobsQuery = query(
+                    collection(db, 'jobs'),
+                    where('status', '==', 'active'),
+                    orderBy('createdAt', 'desc'),
+                    limit(20)
+                );
+
+                const querySnapshot = await getDocs(jobsQuery);
+                querySnapshot.forEach((doc) => {
+                    const job = doc.data();
+                    const jobCard = createJobCard(doc.id, job);
+                    jobsContainer.appendChild(jobCard);
+                });
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+            }
+        }
+
+        function createJobCard(jobId, job) {
+            const card = document.createElement('div');
+            card.className = 'job-card';
+            card.innerHTML = `
+                <div class="company-logo">
+                    <img src="${job.companyLogo || '/assets/default-company.png'}" alt="${job.companyName}">
+                </div>
+                <div class="job-info">
+                    <h3>${job.title}</h3>
+                    <h4>${job.companyName}</h4>
+                    <p>${job.description}</p>
+                    <div class="job-tags">
+                        <span class="job-type">${job.type}</span>
+                        ${job.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                <button class="btn-apply" data-job-id="${jobId}">Apply Now</button>
+            `;
+
+            // Add click handler for apply button
+            card.querySelector('.btn-apply').addEventListener('click', () => {
+                openApplicationModal(jobId, job.title);
+            });
+
+            return card;
+        }
+
+        // Application Modal Functions
+        function openApplicationModal(jobId, jobTitle) {
+            const modal = document.getElementById('application-modal');
+            document.getElementById('job-title-modal').textContent = jobTitle;
+            modal.style.display = 'flex';
+            
+            const form = document.getElementById('application-form');
+            form.onsubmit = (e) => handleApplicationSubmit(e, jobId);
+        }
+
+        async function handleApplicationSubmit(event, jobId) {
+            event.preventDefault();
+            const button = event.target.querySelector('button');
+            button.disabled = true;
+            button.textContent = 'Submitting...';
+
+            try {
+                await addDoc(collection(db, 'applications'), {
+                    jobId,
+                    userId: currentUser.uid,
+                    coverLetter: document.getElementById('cover-letter').value,
+                    portfolioLink: document.getElementById('portfolio-link').value,
+                    status: 'pending',
+                    createdAt: new Date()
+                });
+
+                showNotification('Application submitted successfully!', 'success');
+                document.getElementById('application-modal').style.display = 'none';
+                event.target.reset();
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                showNotification('Error submitting application. Please try again.', 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Submit Application';
+            }
+        }
+
+        // Add event listeners
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            document.getElementById('application-modal').style.display = 'none';
+        });
+
+        document.getElementById('job-type-filter').addEventListener('change', filterJobs);
+        document.getElementById('job-search').addEventListener('input', debounce(filterJobs, 300));
+
+        function filterJobs() {
+            const searchTerm = document.getElementById('job-search').value.toLowerCase();
+            const jobType = document.getElementById('job-type-filter').value;
+            const selectedSkills = Array.from(document.querySelectorAll('.skill-chip.selected'))
+                .map(chip => chip.textContent.toLowerCase());
+
+            document.querySelectorAll('.job-card').forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const type = card.querySelector('.job-type').textContent.toLowerCase();
+                const skills = Array.from(card.querySelectorAll('.skill-tag'))
+                    .map(tag => tag.textContent.toLowerCase());
+
+                const matchesSearch = title.includes(searchTerm);
+                const matchesType = !jobType || type === jobType;
+                const matchesSkills = selectedSkills.length === 0 || 
+                    selectedSkills.every(skill => skills.includes(skill));
+
+                card.style.display = matchesSearch && matchesType && matchesSkills ? 'flex' : 'none';
+            });
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+</body>
+</html> 
