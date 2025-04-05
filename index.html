@@ -16,12 +16,12 @@
             <!-- Auth Tabs -->
             <div class="auth-tabs">
                 <button class="tab-btn" data-tab="login">Login</button>
-                <button class="tab-btn" data-tab="signup-student">Student Signup</button>
-                <button class="tab-btn" data-tab="signup-company">Company Signup</button>
+                <button class="tab-btn" data-tab="student">Student Signup</button>
+                <button class="tab-btn" data-tab="company">Company Signup</button>
             </div>
 
             <!-- Login Form -->
-            <form id="login-form-element" class="auth-form">
+            <form id="login" class="auth-form">
                 <div class="form-group">
                     <label for="login-email">Email</label>
                     <input type="email" id="login-email" name="email" required>
@@ -46,7 +46,18 @@
             </form>
 
             <!-- Student Signup Form -->
-            <form id="student-signup-form-element" class="auth-form">
+            <form id="student" class="auth-form">
+                <div class="social-auth">
+                    <button type="button" class="social-auth-btn google">
+                        <i class="fab fa-google"></i> Continue with Google
+                    </button>
+                    <button type="button" class="social-auth-btn github">
+                        <i class="fab fa-github"></i> Continue with GitHub
+                    </button>
+                </div>
+                <div class="auth-divider">
+                    <span>or continue with email</span>
+                </div>
                 <div class="form-group">
                     <label for="student-email">Email</label>
                     <input type="email" id="student-email" name="email" required>
@@ -55,6 +66,12 @@
                     <label for="student-password">Password</label>
                     <input type="password" id="student-password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$">
                     <span class="form-hint">Password must be at least 8 characters long and include uppercase, lowercase, and numbers</span>
+                </div>
+                <div class="form-group">
+                    <label for="student-username">Username</label>
+                    <input type="text" id="student-username" name="username" required pattern="^[a-zA-Z0-9_]{3,20}$">
+                    <span class="username-status"></span>
+                    <span class="form-hint">Username must be 3-20 characters long, using only letters, numbers, and underscores</span>
                 </div>
                 <div class="form-group">
                     <label for="student-name">Full Name</label>
@@ -72,7 +89,18 @@
             </form>
 
             <!-- Company Signup Form -->
-            <form id="company-signup-form-element" class="auth-form">
+            <form id="company" class="auth-form">
+                <div class="social-auth">
+                    <button type="button" class="social-auth-btn google">
+                        <i class="fab fa-google"></i> Continue with Google
+                    </button>
+                    <button type="button" class="social-auth-btn github">
+                        <i class="fab fa-github"></i> Continue with GitHub
+                    </button>
+                </div>
+                <div class="auth-divider">
+                    <span>or continue with email</span>
+                </div>
                 <div class="form-group">
                     <label for="company-email">Email</label>
                     <input type="email" id="company-email" name="email" required>
@@ -81,6 +109,12 @@
                     <label for="company-password">Password</label>
                     <input type="password" id="company-password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$">
                     <span class="form-hint">Password must be at least 8 characters long and include uppercase, lowercase, and numbers</span>
+                </div>
+                <div class="form-group">
+                    <label for="company-username">Username</label>
+                    <input type="text" id="company-username" name="username" required pattern="^[a-zA-Z0-9_]{3,20}$">
+                    <span class="username-status"></span>
+                    <span class="form-hint">Username must be 3-20 characters long, using only letters, numbers, and underscores</span>
                 </div>
                 <div class="form-group">
                     <label for="company-name">Company Name</label>
@@ -116,12 +150,39 @@
     </nav>
 
     <section id="home" class="hero">
+        <!-- Floating Elements -->
+        <div class="floating-element code">
+            <i class="fas fa-code"></i>
+        </div>
+        <div class="floating-element ai">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="floating-element grad">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        
         <div class="hero-content">
             <h1 class="animate">Transform Your Business with Affordable Tech Talent</h1>
             <p class="animate">Connect with talented student programmers and AI solutions.</p>
             <div class="hero-buttons animate">
                 <a href="#register" class="cta-button">Get Started</a>
                 <a href="#services" class="cta-button secondary">Learn More</a>
+            </div>
+            
+            <!-- Trust Indicators -->
+            <div class="trust-indicators animate">
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Verified Talent</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-clock"></i>
+                    <span>24/7 Support</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>100% Satisfaction</span>
+                </div>
             </div>
         </div>
     </section>
@@ -208,40 +269,20 @@
             </p>
         </div>
 
-        <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
-            <input type="hidden" name="access_key" value="a1662d29-c89f-41a7-90c2-b5131bf5624b" />
-            <input type="hidden" name="subject" value="New Contact Form Submission - Fedet" />
-            <input type="hidden" name="from_name" value="Fedet Website Contact" />
-            <input type="checkbox" name="botcheck" style="display: none;" />
-
-            <div class="form-group-container">
-                <div class="form-group">
-                    <label for="name" class="form-label">Name</label>
-                    <input id="name" name="name" class="form-input" placeholder="Your name" type="text" required />
-                </div>
-                
-                <div class="form-group">
-                    <label for="email" class="form-label">Email</label>
-                    <input id="email" name="email" class="form-input" placeholder="Your email" type="email" required />
-                </div>
-                
-                <div class="form-group">
-                    <label for="service" class="form-label">Service</label>
-                    <select id="service" name="service" class="form-input" required>
-                        <option value="">Select Service</option>
-                        <option value="Student Internship">Student Internship</option>
-                        <option value="AI Solutions">AI Solutions</option>
-                        <option value="Learning Programs">Learning Programs</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-textarea" id="message" name="message" placeholder="Tell us about your project or requirements" required></textarea>
-                </div>
+        <form id="contactForm" action="https://formspree.io/f/your-form-id" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
             </div>
-            
-            <button class="form-submit cta-button" type="submit">Send Message</button>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Send Message</button>
         </form>
     </section>
 
@@ -266,7 +307,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Fedet. All rights reserved.</p>
+            <p>&copy; 2025 Fedet. All rights reserved. - Made with ❤️ and Vibecoding.</p>
         </div>
     </footer>
 
@@ -280,5 +321,102 @@
     
     <!-- Load main script -->
     <script src="script.js"></script>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Auth modal functionality
+        function switchTab(tab) {
+            const forms = document.querySelectorAll('.auth-form');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            // Hide all forms and remove active class from all tabs
+            forms.forEach(form => {
+                form.style.display = 'none';
+                form.classList.remove('active');
+            });
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected form and activate clicked tab
+            const targetForm = document.getElementById(tab);
+            const targetBtn = document.querySelector(`[data-tab="${tab}"]`);
+            
+            if (targetForm && targetBtn) {
+                targetForm.style.display = 'block';
+                targetForm.classList.add('active');
+                targetBtn.classList.add('active');
+            }
+        }
+
+        function openAuthModal(tab = 'login') {
+            const modal = document.getElementById('auth-modal');
+            modal.style.display = 'block';
+            
+            // Switch to correct tab
+            let targetTab;
+            if (tab === 'signup') {
+                targetTab = 'student';
+            } else if (tab === 'signup-company') {
+                targetTab = 'company';
+            } else {
+                targetTab = 'login';
+            }
+            
+            switchTab(targetTab);
+        }
+
+        // Close modal when clicking on X or outside
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            document.getElementById('auth-modal').style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('auth-modal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tab = button.getAttribute('data-tab');
+                switchTab(tab);
+            });
+        });
+
+        // Initialize first tab
+        document.addEventListener('DOMContentLoaded', () => {
+            switchTab('login');
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            });
+
+            animatedElements.forEach(element => observer.observe(element));
+        });
+    </script>
 </body>
 </html> 

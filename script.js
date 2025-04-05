@@ -301,4 +301,119 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize user profile dropdown
     createUserProfileDropdown();
+
+    // Username validation
+    const setupUsernameValidation = (inputId) => {
+        const input = document.getElementById(inputId);
+        const statusSpan = input.nextElementSibling;
+        let timeout;
+
+        input.addEventListener('input', async () => {
+            const username = input.value.trim();
+            
+            // Clear previous timeout
+            clearTimeout(timeout);
+            
+            // Reset status
+            statusSpan.textContent = '';
+            statusSpan.className = 'username-status';
+            
+            // Validate format
+            const isValidFormat = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+            if (!isValidFormat) {
+                statusSpan.textContent = 'Invalid username format';
+                statusSpan.classList.add('error');
+                return;
+            }
+
+            // Show checking status
+            statusSpan.textContent = 'Checking availability...';
+            statusSpan.classList.add('checking');
+
+            // Debounce the API call
+            timeout = setTimeout(async () => {
+                try {
+                    const isAvailable = await window.Auth.checkUsername(username);
+                    statusSpan.textContent = isAvailable ? '✓ Username available' : '✗ Username taken';
+                    statusSpan.classList.remove('checking');
+                    statusSpan.classList.add(isAvailable ? 'success' : 'error');
+                } catch (error) {
+                    console.error('Username check error:', error);
+                    statusSpan.textContent = 'Error checking username';
+                    statusSpan.classList.remove('checking');
+                    statusSpan.classList.add('error');
+                }
+            }, 500);
+        });
+    };
+
+    // Initialize username validation
+    setupUsernameValidation('student-username');
+    setupUsernameValidation('company-username');
+
+    // Update form submission handlers
+    const studentForm = document.getElementById('studentSignupForm');
+    if (studentForm) {
+        studentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(studentForm);
+            try {
+                await window.Auth.studentSignup(
+                    formData.get('email'),
+                    formData.get('password'),
+                    formData.get('username'),
+                    formData.get('name'),
+                    formData.get('university'),
+                    formData.get('major')
+                );
+            } catch (error) {
+                console.error('Student signup error:', error);
+                showNotification(error.message, 'error');
+            }
+        });
+    }
+
+    const companyForm = document.getElementById('companySignupForm');
+    if (companyForm) {
+        companyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(companyForm);
+            try {
+                await window.Auth.companySignup(
+                    formData.get('email'),
+                    formData.get('password'),
+                    formData.get('username'),
+                    formData.get('companyName'),
+                    formData.get('industry'),
+                    formData.get('description')
+                );
+            } catch (error) {
+                console.error('Company signup error:', error);
+                showNotification(error.message, 'error');
+            }
+        });
+    }
 });
+
+// Add styles for username validation
+const style = document.createElement('style');
+style.textContent = `
+    .username-status {
+        display: inline-block;
+        margin-left: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .username-status.checking {
+        color: var(--text-light);
+    }
+
+    .username-status.success {
+        color: var(--secondary-color);
+    }
+
+    .username-status.error {
+        color: var(--error-color);
+    }
+`;
+document.head.appendChild(style);

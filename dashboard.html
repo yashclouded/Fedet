@@ -1,10 +1,11 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard - Fedet</title>
+    <title>Dashboard - Fedet</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Firebase SDK -->
     <script type="module" src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
@@ -14,62 +15,91 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">
-            <a href="/">Fedet</a>
+        <div class="nav-brand">
+            <a href="/" class="logo">Fedet</a>
         </div>
         <div class="nav-links">
-            <a href="#" class="active">Dashboard</a>
-            <a href="/profile.html">My Profile</a>
+            <a href="/dashboard.html" class="active">Dashboard</a>
+            <a href="/my-profile.html">My Profile</a>
             <a href="/applications.html">My Applications</a>
             <a href="/messages.html">Messages</a>
         </div>
-        <div class="auth-buttons">
-            <!-- Will be populated by Firebase auth state -->
+        <div class="user-profile-button">
+            <!-- Profile dropdown will be inserted by JavaScript -->
         </div>
     </nav>
 
     <main class="dashboard-container">
         <aside class="dashboard-sidebar">
-            <div class="user-profile-summary">
-                <img id="user-avatar" src="/assets/default-avatar.png" alt="Profile Picture">
-                <h3 id="user-name">Loading...</h3>
-                <p id="user-university">Loading...</p>
-            </div>
             <div class="filter-section">
-                <h4>Filter Jobs</h4>
+                <h3>Filter Jobs</h3>
                 <div class="filter-group">
-                    <label>Job Type</label>
-                    <select id="job-type-filter">
-                        <option value="">All Types</option>
+                    <label for="jobType">Job Type</label>
+                    <select id="jobType">
+                        <option value="all">All Types</option>
+                        <option value="fullTime">Full Time</option>
+                        <option value="partTime">Part Time</option>
                         <option value="internship">Internship</option>
-                        <option value="part-time">Part Time</option>
-                        <option value="full-time">Full Time</option>
                         <option value="project">Project Based</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label>Skills</label>
-                    <div id="skills-filter" class="skills-container">
-                        <!-- Will be populated dynamically -->
+                    <label for="skills">Skills</label>
+                    <div class="skills-input-container">
+                        <input type="text" id="skills" placeholder="Add skills...">
+                        <div class="selected-skills"></div>
                     </div>
                 </div>
+                <div class="filter-group">
+                    <label for="compensation">Compensation</label>
+                    <select id="compensation">
+                        <option value="all">All</option>
+                        <option value="paid">Paid Only</option>
+                        <option value="unpaid">Unpaid Accepted</option>
+                    </select>
+                </div>
+                <button class="btn-primary apply-filters">Apply Filters</button>
             </div>
         </aside>
 
-        <section class="jobs-section">
-            <div class="jobs-header">
-                <h1>Available Opportunities</h1>
-                <div class="search-bar">
-                    <input type="text" id="job-search" placeholder="Search jobs...">
-                    <button><i class="fas fa-search"></i></button>
+        <section class="dashboard-main">
+            <div class="dashboard-header">
+                <h1>Welcome back, <span class="user-name">...</span>!</h1>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <i class="fas fa-star"></i>
+                        <div class="stat-info">
+                            <h3>Your Points</h3>
+                            <p class="points-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-briefcase"></i>
+                        <div class="stat-info">
+                            <h3>Active Applications</h3>
+                            <p class="applications-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="stat-info">
+                            <h3>Completed Projects</h3>
+                            <p class="completed-value">0</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="jobs-grid" id="jobs-container">
-                <!-- Jobs will be populated here -->
-                <div class="loading-spinner">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>Loading opportunities...</p>
+            <div class="jobs-container">
+                <h2>Available Opportunities</h2>
+                <div class="jobs-grid" id="jobsGrid">
+                    <!-- Jobs will be dynamically inserted here -->
+                    <div class="job-card skeleton">
+                        <div class="job-header skeleton-text"></div>
+                        <div class="job-company skeleton-text"></div>
+                        <div class="job-description skeleton-text"></div>
+                        <div class="job-footer skeleton-text"></div>
+                    </div>
                 </div>
             </div>
         </section>
